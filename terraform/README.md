@@ -1,0 +1,3 @@
+- [ ] Set environment variables
+- [ ] Create separate directory for projects
+- [ ] Make terraform modular  
