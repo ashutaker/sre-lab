@@ -2,3 +2,9 @@ terraform/proxmox/.terraform.lock.hcl
 terraform/proxmox/.terraform/*
 terraform/proxmox/terraform.tfstate
 terraform/proxmox/terraform.tfstate.backup
+terraform/kubernetes/.terraform/modules/modules.json
+terraform/kubernetes/.terraform/providers/registry.terraform.io/telmate/proxmox/3.0.2-rc03/linux_amd64/LICENSE
+terraform/kubernetes/.terraform/providers/registry.terraform.io/telmate/proxmox/3.0.2-rc03/linux_amd64/README.md
+terraform/kubernetes/.terraform/providers/registry.terraform.io/telmate/proxmox/3.0.2-rc03/linux_amd64/terraform-provider-proxmox_v3.0.2-rc03
+terraform/kubernetes/terraform.tfstate
+terraform/kubernetes/terraform.tfstate.backup
