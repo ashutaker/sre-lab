@@ -1,22 +1,20 @@
 ---
 master:
-  vm_name: "test-kctr01"
+  vm_name: "test-kctr"
   vm_template_name: "ubuntu-2404-base-template"
-  pm_host: var.pm_host
   cpu:
     cores: 2
   memory: 2048
 worker1:
-  vm_name: "test-kworker01"
+  vm_count: 2
+  vm_name: "test-kworker"
   vm_template_name: "ubuntu-2404-base-template"
-  pm_host: var.pm_host
   cpu:
     tye: "host"
   memory: 1024
-worker2:
-  vm_name: "test-kworker02"
-  vm_template_name: "ubuntu-2404-base-template"
-  pm_host: var.pm_host
-  cpu:
-    tye: "host"
-  memory: 1024
+# worker2:
+#   vm_name: "test-kworker02"
+#   vm_template_name: "ubuntu-2404-base-template"
+#   cpu:
+#     tye: "host"
+#   memory: 1024

@@ -43,6 +43,12 @@ variable "vm_memory" {
   # default = 1024
 }
 
+variable "vm_count" {
+  description = "Number of VM to create"
+  type = number
+  default = 1
+}
+
 variable "vm_cpu" {
   type = object({
     cores   = optional(number,1)

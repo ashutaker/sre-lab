@@ -64,14 +64,15 @@ module "k8s-control-plane" {
   # from kube-lab config
   vm_name          = each.value.vm_name
   vm_template_name = each.value.vm_template_name
-  pm_host          = each.value.pm_host
   vm_cpu           = try(each.value.cpu, var.vm_cpu)
   vm_memory        = each.value.memory
+  vm_count         = try(each.value.vm_count, 1)
 
   # from env variable
   pm_api_token_id     = var.pm_api_token_id
   pm_api_token_secret = var.pm_api_token_secret
   ci_ssh_key          = var.ci_ssh_key
+  pm_host             = var.pm_host
 
 
 }
