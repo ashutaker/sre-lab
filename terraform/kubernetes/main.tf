@@ -51,7 +51,7 @@ variable "vm_cpu" {
 }
 
 locals {
-  configs = yamldecode(file("${path.module}/kube-lab.yaml"))
+  configs = yamldecode(file("../../lab-configs/kube-lab.yaml"))
 }
 
 module "k8s-control-plane" {
