@@ -1,0 +1,7 @@
+---
+- hosts: all
+  become: true
+  vars:
+    kubernetes_version: 1.31
+  roles:
+    - role: "roles/kubernetes-prereq"
