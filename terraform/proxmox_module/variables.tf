@@ -60,3 +60,7 @@ variable "vm_cpu" {
     vcores  = optional(number,0)
   })
 }
+
+variable "tags"{
+  type = list(string)
+}

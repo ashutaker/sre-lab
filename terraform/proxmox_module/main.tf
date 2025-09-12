@@ -66,6 +66,8 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
     type = "socket"
   }
 
+  tags = join(";", sort(var.tags))
+
 }
 
 

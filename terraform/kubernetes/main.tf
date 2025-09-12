@@ -73,6 +73,7 @@ module "k8s-control-plane" {
   pm_api_token_secret = var.pm_api_token_secret
   ci_ssh_key          = var.ci_ssh_key
   pm_host             = var.pm_host
+  tags                = try(each.value.tags,[""])
 
 
 }

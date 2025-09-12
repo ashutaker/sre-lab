@@ -5,13 +5,23 @@ master:
   cpu:
     cores: 2
   memory: 2048
-# worker1:
-#   vm_count: 2
-#   vm_name: "test-kworker"
-#   vm_template_name: "ubuntu-2404-base-template"
-#   cpu:
-#     tye: "host"
-#   memory: 1024
+  tags:
+    - kubernetes
+    - master
+    - controller
+    - test
+worker1:
+  vm_count: 2
+  vm_name: "test-kworker"
+  vm_template_name: "ubuntu-2404-base-template"
+  cpu:
+    tye: "host"
+  memory: 1024
+  tags:
+  - kubernetes
+  - worker
+  - controller
+  - test
 # worker2:
 #   vm_name: "test-kworker02"
 #   vm_template_name: "ubuntu-2404-base-template"
