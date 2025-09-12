@@ -1,0 +1,31 @@
+---
+# master:
+#   hosts:
+#     10.42.0.18
+# # workers:
+# #   hosts:
+# #     10.42.0.19
+plugin: community.proxmox.proxmox
+validate_certs: false
+user: "terrauser@pve"
+url: "https://{{lookup('ansible.builtin.env', 'TF_VAR_pm_host')}}:8006"
+token_id: "terraform" #"{{lookup('ansible.builtin.env', 'TF_VAR_pm_api_token_id'}}"
+token_secret: "{{ lookup('ansible.builtin.env', 'TF_VAR_pm_api_token_secret') }}"
+want_facts: true
+# keyed_groups:
+#     # proxmox_tags_parsed is an example of a fact only returned when 'want_facts=true'
+#   - key: proxmox_tags_parsed
+#     separator: ""
+#     prefix: group
+want_proxmox_nodes_ansible_host: false
+compose:
+  ansible_host: >
+    proxmox_agent_interfaces |
+    selectattr('name', 'in',['eth0']) |
+    map(attribute='ip-addresses') |
+    flatten |
+    first |
+    ipaddr('address')
+
+groups:
+  master: "('kubernetes','master') | difference(proxmox_tags_parsed|list) | length == 0"
