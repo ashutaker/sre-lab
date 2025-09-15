@@ -1,10 +1,10 @@
 ---
 - name: Update apt
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
 
 - name: Install required packages
-  apt:
+  ansible.builtin.apt:
     name:
       - curl
       - gnupg2
@@ -12,14 +12,14 @@
       - apt-transport-https
       - ca-certificates
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: Disable swap
   ansible.builtin.shell: 
     cmd: swapoff -a
 
 - name: Remove swap from fstab
-  replace:
+  ansible.builtin.replace:
     path: /etc/fstab
     regexp: '^([^#].*?\sswap\s+sw\s+.*)$'
     replace: '# \1'
@@ -34,22 +34,22 @@
   ansible.builtin.apt_repository:
     repo: "deb [arch={{ 'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
     state: present
-    update_cache: yes
+    update_cache: true
     
-- name: install Containerd
+- name: Install Containerd
   ansible.builtin.apt:
     name: containerd.io
     state: present
     update_cache: 
     
 - name: Create containerd config directory
-  file:
+  ansible.builtin.file:
     path: /etc/containerd
     state: directory
     mode: '0755'
 
-- name: populate containerd default configuration
-  shell: /usr/bin/containerd config default > /etc/containerd/config.toml
+- name: Populate containerd default configuration
+  ansible.builtin.shell: /usr/bin/containerd config default > /etc/containerd/config.toml
 
 - name: Add kernel modules for containerd
   ansible.builtin.copy:
@@ -58,8 +58,8 @@
       overlay
       br_netfilter
 
-- name: update containerd config
-  lineinfile:
+- name: Update containerd config
+  ansible.builtin.lineinfile:
     insertafter: '.*\[plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options\]$'
     path: /etc/containerd/config.toml
     regexp: '            SystemdCgroup = false'
@@ -69,43 +69,44 @@
   ansible.builtin.service:
     name: containerd
     state: restarted
-    enabled: yes
-    daemon-reload: yes
+    enabled: true
+    daemon-reload: true
 
 ### Create and apply kernel params
-- name: enable bridging kernel parameters for kubernetes
+- name: Enable bridging kernel parameters for kubernetes
   ansible.builtin.copy:
     dest: /etc/sysctl.d/kubernetes.conf
     content: |
       net.bridge.bridge-nf-call-ip6tables = 1
       net.bridge.bridge-nf-call-iptables = 1
       net.ipv4.ip_forward = 1
+
 - name: Apply kernel params
-  command: sysctl --system
+  ansible.builtin.command: sysctl --system
 
 ### install kubernetes
-- name: download kubernetes public signing key
+- name: Download kubernetes public signing key
   ansible.builtin.get_url:
     url: 'https://pkgs.k8s.io/core:/stable:/v{{ kubernetes_version }}/deb/Release.key'
     dest: /etc/apt/keyrings/kubernetes-apt-keyring.asc
     mode: '0644'
     force: true
 
-- name: add kubernetes repository
+- name: Add kubernetes repository
   ansible.builtin.apt_repository:
     repo: 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.asc] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /'
     state: present
-    update_cache: yes
+    update_cache: true
 
-- name: install kubernetes components
+- name: Install kubernetes components
   ansible.builtin.apt:
     name:
       - kubeadm
       - kubectl
       - kubelet
     state: present
-    update_cache: yes
-- name: mark packages to hold
+    update_cache: true
+- name: Mark packages to hold
   ansible.builtin.dpkg_selections:
     name: "{{ item }}"
     selection: hold
@@ -113,10 +114,13 @@
     - kubeadm
     - kubectl
     - kubelet
-- name: enable kubelet service
+- name: Enable kubelet service
   ansible.builtin.service:
     name: kubelet
-    enabled: yes
+    enabled: true
+
+- name: Reboot and wait for reboot to complete
+  ansible.builtin.reboot:
 
 
 
