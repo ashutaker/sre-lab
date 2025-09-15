@@ -15,8 +15,8 @@ want_facts: true
 # keyed_groups:
 #     # proxmox_tags_parsed is an example of a fact only returned when 'want_facts=true'
 #   - key: proxmox_tags_parsed
-#     separator: ""
-#     prefix: group
+#     separator: "-"
+#     prefix: homelab
 want_proxmox_nodes_ansible_host: false
 compose:
   ansible_host: >
@@ -25,7 +25,9 @@ compose:
     map(attribute='ip-addresses') |
     flatten |
     first |
-    ipaddr('address')
+    ansible.utils.ipaddr('address')
 
 groups:
-  master: "('kubernetes','master') | difference(proxmox_tags_parsed|list) | length == 0"
+  kube_master: "('kubernetes','master','test') | difference(proxmox_tags_parsed|list) | length == 0"
+  kube_all: "('kubernetes','test') | difference(proxmox_tags_parsed|list) | length == 0"
+  kube_worker: "('kubernetes','worker','test') | difference(proxmox_tags_parsed|list) | length == 0"

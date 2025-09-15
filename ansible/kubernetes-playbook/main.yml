@@ -1,7 +1,14 @@
 ---
-- hosts: master
+- name: Apply prereq to all the nodes
+  hosts: kube_all
   become: true
   vars:
     kubernetes_version: 1.31
   roles:
-    - role: "roles/kubernetes-prereq"
+    - role: "kubernetes-prereq"
+- name: Install control plane
+  hosts: kube_master
+  become: true
+  roles:
+    - role: "controller"
+     
