@@ -1,0 +1,3 @@
+---
+# defaults file for controller
+kube_admin_user: "ashu"
