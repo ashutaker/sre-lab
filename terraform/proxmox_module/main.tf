@@ -15,6 +15,7 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
   target_node = var.target_pm_node
 
   clone = var.vm_template_name
+  onboot = true
 
   # Activate QEMU agent for this VM
   agent  = 1
@@ -67,7 +68,6 @@ resource "proxmox_vm_qemu" "cloudinit-test" {
   }
 
   tags = join(";", sort(var.tags))
-
 }
 
 
