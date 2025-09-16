@@ -4,6 +4,7 @@
   become: true
   vars:
     kubernetes_version: 1.31
+    ansible_host_key_checking: false
   roles:
     - role: "kubernetes-prereq"
 - name: Install control plane
