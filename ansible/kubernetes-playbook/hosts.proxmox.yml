@@ -26,7 +26,7 @@ compose:
     flatten |
     first |
     ansible.utils.ipaddr('address')
-
+  ansible_host_key_checking: false
 groups:
   kube_master: "('kubernetes','master','test') | difference(proxmox_tags_parsed|list) | length == 0"
   kube_all: "('kubernetes','test') | difference(proxmox_tags_parsed|list) | length == 0"
